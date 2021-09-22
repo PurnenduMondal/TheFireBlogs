@@ -7,7 +7,7 @@ function Header() {
     <div className="head">
     <header>
       <h1>
-        Free Fire Gun Guide
+        Free Fire Blogs
       </h1>
       <nav class="navigation">
         <ul >           

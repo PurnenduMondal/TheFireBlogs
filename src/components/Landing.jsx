@@ -1,17 +1,18 @@
 import React, { useState, lazy } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "./axiosWithBaseURL";
+import db from "./firebase";
+import './Landing.css'
 const Header = lazy(() => import("./Header"));
-const Footer = lazy(() => import("./Footer"));
 const CategoryList = lazy(() => import("./CategoryList"));
-const CreateArea = lazy(() => import("./CreateArea"));
+
 
 function Landing()
 {
     const [items, setItems] = useState([]);
     React.useEffect(() => {
-    axios.get("images").then(res => {setItems(res.data)});
-    
+    //axios.get("images").then(res => {setItems(res.data)});
+    db.collection('category').onSnapshot(snapshot => {setItems(snapshot.docs.map(doc => doc.data()))});
     }, []);
 
   const renderLoader = () => (
@@ -25,11 +26,11 @@ function Landing()
     return (
         <div>
           <Header />
-        <div>
+        <div className="Landing__cat">
           {items.length > 0 ? (items.map((item, index) => {
             return (
 
-                <Link to={"/"+item.name}>
+                <Link to={"/landing/"+item.name}>
                     <CategoryList
                         key={index}
                         id={index}

@@ -10,37 +10,38 @@ import 'swiper/components/pagination/pagination.scss';
 import 'swiper/components/scrollbar/scrollbar.scss';
 import {Radar}  from 'react-chartjs-2';
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-
+import db from "./firebase";
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
-function ItemList(props)
+function ItemList()
 {
-  const items = props.items;
-    // const [items, setItems] = useState([]);
-    // const {id} = useParams();
+  //const items = props.items;
+    const [items, setItems] = useState([]);
+    const {catid} = useParams();
 
-    // React.useEffect(() => {
-    //     axios.post('https://ffggserver.vercel.app/iteminfo', {catname : id})
-    //     .then(res => { 
-    //       //
-    //       setItems(res.data);
-    //       // openDB(id, 1, {
-    //       //   upgrade(db) {
-    //       //     const dbPromise = db.createObjectStore(id);
-    //       //     dbPromise.put(id,JSON.stringify(res.data),id)
-    //       //   },
-    //       // });
-    //       set(id,JSON.stringify(res.data));
+    React.useEffect(() => {
+        // axios.post('https://ffggserver.vercel.app/iteminfo', {catname : id})
+        // .then(res => { 
+        //   //
+        //   setItems(res.data);
+        //   // openDB(id, 1, {
+        //   //   upgrade(db) {
+        //   //     const dbPromise = db.createObjectStore(id);
+        //   //     dbPromise.put(id,JSON.stringify(res.data),id)
+        //   //   },
+        //   // });
+        //   set(id,JSON.stringify(res.data));
 
-    //     }).catch(err =>{
-    //       get(id).then((data) => {
-    //         var x = JSON.parse(data)
-    //         setItems(x)
-    //       });
-    //       //setItems(get(id));
-    //     })
+        // }).catch(err =>{
+        //   get(id).then((data) => {
+        //     var x = JSON.parse(data)
+        //     setItems(x)
+        //   });
+        //   //setItems(get(id));
+        // })
+        db.collection('items').where('gunType', '==', catid).onSnapshot(snapshot=>{setItems(snapshot.docs.map(doc=>doc.data()))})
 
-    //     }, []);
+        }, [catid]);
         const plugin = {
           id: 'custom_canvas_background_color',
           beforeDraw: (chart) => {
@@ -59,16 +60,16 @@ function ItemList(props)
           return{  
               labels: [
                 'DAMAGE '+item.damage,
-                'RATE OF FIRE '+item.rate_of_fire,
+                'RATE OF FIRE '+item.rateOfFire,
                 'RANGE '+item.range,
-                'RELOAD SPEED '+item.reload_speed,
+                'RELOAD SPEED '+item.reloadSpeed,
                 'MAGAZINE '+item.magazine,
                 'ACCURACY '+item.accuracy,
-                'MOVEMENT SPEED '+item.movement_speed,
+                'MOVEMENT SPEED '+item.movementSpeed,
               ],
               
               datasets: [{
-                data: [item.damage, item.rate_of_fire, item.range, item.reload_speed, item.magazine, item.accuracy,item.movement_speed],
+                data: [item.damage, item.rateOfFire, item.range, item.reloadSpeed, item.magazine, item.accuracy,item.movementSpeed],
                 fill: true,
                 borderColor: 'rgba(80, 203, 147)',
                 backgroundColor: 'rgba(80, 203, 147,.5)',
@@ -122,8 +123,8 @@ function ItemList(props)
         <Swiper
         spaceBetween={0}
         slidesPerView={1}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
+        // onSlideChange={() => console.log('slide change')}
+        // onSwiper={(swiper) => console.log(swiper)}
         pagination={{ clickable: true }}
         // scrollbar={{ draggable: true }}
         >

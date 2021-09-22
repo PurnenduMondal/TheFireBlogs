@@ -1,0 +1,12 @@
+.blog {
+    margin-top: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.blog__title {
+    padding: 2px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: black;
+}

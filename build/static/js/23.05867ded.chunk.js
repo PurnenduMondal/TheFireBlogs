@@ -1,0 +1,2 @@
+(this.webpackJsonpclient=this.webpackJsonpclient||[]).push([[23],{253:function(e,t,n){"use strict";n.r(t);n(0);var c=n(1);t.default=function(){var e=(new Date).getFullYear();return Object(c.jsx)("footer",{children:Object(c.jsxs)("p",{children:["Copyright \u24d2 ",e]})})}}}]);
+//# sourceMappingURL=23.05867ded.chunk.js.map

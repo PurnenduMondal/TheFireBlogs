@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/Landing.css"],"names":[],"mappings":"AAAA,cACI,gBAAiB,CACjB,eAAgB,CAChB,gBACJ","file":"13.36df6cc2.chunk.css","sourcesContent":[".Landing__cat {\r\n    margin-top: 100px;\r\n    margin-left: 5px;\r\n    margin-right: 5px;\r\n}"]}

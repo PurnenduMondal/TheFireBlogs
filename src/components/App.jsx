@@ -1,4 +1,4 @@
-import React, { useState , lazy, Suspense } from "react";
+import React, {  lazy, Suspense } from "react";
 import {} from "react-router-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -13,6 +13,9 @@ const SG = lazy(() => import("./SG"))
 const SMG = lazy(() => import("./SMG"))
 const SR = lazy(() => import("./SR"))
 const CreatePost = lazy(() => import("./CreatePost"))
+const Blogs = lazy(() => import("./Blogs"))
+const BlogPost = lazy(() => import("./BlogPost"))
+const ItemList = lazy(() => import("./ItemList"))
 
 function App() {
   
@@ -29,18 +32,11 @@ function App() {
       <Router>
       <Suspense fallback={renderLoader()}>
         <Switch>
-          <Route path="/" exact component= {Landing}/>
-          <Route path="/AR" exact component= {AR}/>
-          <Route path="/LAUNCHER" exact component= {LAUNCHER}/>
-          <Route path="/LMG" exact component= {LMG}/>
-          <Route path="/MELEE" exact component= {MELEE}/>
-          <Route path="/PISTOL" exact component= {PISTOL}/>
-          <Route path="/SG" exact component= {SG}/>
-          <Route path="/SMG" exact component= {SMG}/>
-          <Route path="/SR" exact component= {SR}/>
-          <Route path="/createpost" exact component= {CreatePost}/>
-          
-          {/* <Route path="/:id" exact component={ItemList} /> */}
+          <Route path="/" exact component= {Blogs}/>
+          <Route path="/blogs/:id" exact component={BlogPost} />
+          <Route path="/landing/:catid" exact component= {ItemList}/>
+          <Route path="/blogs/createpost" exact component= {CreatePost}/>
+          <Route path="/landing" exact component= {Landing}/>
         </Switch>
         </Suspense>
       </Router>

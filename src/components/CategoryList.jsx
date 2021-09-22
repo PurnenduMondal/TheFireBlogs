@@ -17,7 +17,7 @@ function CategoryList(props) {
   return (
     <div className="responsive">
     <div class="gallery">
-      <img width="314" height="177" src={"data:image/"+props.imgsrc.contentType+";base64,"+arrayBufferToBase64(props.imgsrc.data.data)} className="img-fluid" alt="Responsive image"/>
+      <img width="314" height="177" src={props.imgsrc} className="img-fluid" alt="Responsive image"/>
       <div  class="desc">{props.title}</div>
     </div>
     </div>

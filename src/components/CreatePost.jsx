@@ -1,14 +1,17 @@
 import React, { Component,useState } from "react";
-import axios from "axios";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import axios from "./axiosWithBaseURL";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
+//import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import sanitizeHtml from "sanitize-html";
-
-
+import MyCustomUploadAdapterPlugin from "./MyUploadAdapter"
+import db from "./firebase";
 function CreatePost() {
 
-    const [title, setTitle] = useState('default title');
-    const [body, setBody] = useState('default body');
+    const [title, setTitle] = useState('Give a the Title');
+    const [auther, setAuther] = useState('Enter the Auther name')
+    const [body, setBody] = useState('Start writing your blog');
+    const [imgsrc, setImgsrc] = useState('https://www.google.com');
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -23,30 +26,34 @@ function CreatePost() {
             // document.querySelector(".spinner-container").style.display = "flex";
 
             //setAllValues({...allValues, body: sanitizedData });
-            let formData = new FormData();
-            var imagefile = document.querySelector('#file');
-
-            formData.append('name', title);
-            formData.append("img", imagefile.files[0]);
-            formData.append('body', body);
-
-            axios.post('upload_file', formData, {
-                headers: {
-                'Content-Type': 'multipart/form-data'
+            // let formData = new FormData();
+            // formData.append('name', title);
+            // formData.append('auther', auther);
+            // formData.append("Img", imgsrc);
+            // formData.append('body', body);
+            // axios.post('upload',{
+            //     'name': title,
+            //     'auther': auther,
+            //     "img": imgsrc,
+            //     'body': body
+            // })
+            console.log(new Date(new Date().toUTCString() +(3600000*+5.5)).toLocaleString().replace(/\s+/g, ''))
+            db.collection('blogs').doc(new Date(new Date().toUTCString() +(3600000*+5.5)).toLocaleString().replace(/\s+/g, '').replace(/[/]/g, "D").replace(/[,]/g, "comma").replace(/[:]/g, "T")).set(
+                {
+                    'name': title,
+                    'auther': auther,
+                    'img': imgsrc,
+                    'body': body,
+                    'timestamp': new Date(new Date().toUTCString() +(3600000*+5.5)).toLocaleString()
                 }
-            })
-            // const Blog = {
-
-            //     title: allValues.title,
-            //     body: allValues.body,
-            // };
-
-            //axios.post('uplaod', Blog)
-                // .then((res) => (window.location = "/posts"))
-                // .catch((err) => console.log(err));
+            )
         }
     }
-  
+
+    const editorConfiguration = {
+        toolbar: [ 'bold', 'italic', 'imageInsert','heading', 'mediaEmbed','insertTable','indent','link', 'fontfamily','alignment','blockquote','fontsize','numberedlist','bulletedlist','undo','redo','fontcolor']
+    };
+
     return (
         <div className="edit-post">
             <h1>
@@ -59,51 +66,55 @@ function CreatePost() {
                         className="form-control edit-title"
                         type="text"
                         name="title"
-                        value={title}
+                        placeholder={title}
                         onChange={e => {setTitle(e.target.value)}}
                         required
                     />
                 </div>
-                <br />
-                 <div>
-				<label >Upload Image</label>
-				<input type="file" id="file" name="image"/>
+
+                <br/>
+                <div>
+				<label >Auther Name:</label>
+				<input type="text" id="auther" placeholder={auther} name="auther" onChange={e => {setAuther(e.target.value)}} required/>
 			    </div>
+                <br/>
+
+                <div>
+				<label >Image Link:</label>
+				<input type="text" name="imgsrc" onChange={e => {setImgsrc(e.target.value)}}/>
+			    </div>
+
+                <br/>
 
                 <div>
                     <CKEditor
-                        editor={ClassicEditor}
+                        onReady={ editor => {
+                        console.log( 'Editor is ready to use!', editor );
+
+                        // Insert the toolbar before the editable area.
+                        editor.ui.getEditableElement().parentElement.insertBefore(
+                            editor.ui.view.toolbar.element,
+                            editor.ui.getEditableElement()
+                            );
+                        } }
+                        editor={Editor}
+                        placeholder={body}
                         onChange={(e, editor) => {
                             setBody(editor.getData())
                             }}
-                        config={{
-                            toolbar: [
-                                "Heading",
-                                "|",
-                                "Bold",
-                                "Italic",
-                                "Link",
-                                "NumberedList",
-                                "BulletedList",
-                                "|",
-                                "BlockQuote",
-                                "MediaEmbed",
-                                "Undo",
-                                "Redo",
-                            ],
-                        }}
+                        config={ editorConfiguration }
                     />
                 </div>
 
-
                 <br />
+
                 <div className="form-group">
                     <input
                         type="submit"
                         value="Submit Post"
                         className="btn btn-outline-primary btn-lg"
                     />
-                </div> 
+                </div>
             </form>
         </div>
     );

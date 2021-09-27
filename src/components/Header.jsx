@@ -7,7 +7,7 @@ function Header() {
     <div className="head">
     <header>
       <h1>
-        Free Fire Blogs
+        FIRE BLOGS
       </h1>
       <nav class="navigation">
         <ul >           
